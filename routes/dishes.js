@@ -26,6 +26,17 @@ router.get('/:dishname', async function (req, res, next) {
 	}
 });
 
+router.delete('/', async (req, res) => {
+	try {
+		const { dishName } = req.body;
+		await dishesService.deleteDish(dishName);
+		res.status(200).json({ message: 'Dish delete successfully'});
+		
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+	}
+})
+
 /* POST create a new dish for the country and add country if the country is not in the database*/
 router.post('/', jsonParser, async function (req, res, next) {
 	try {

@@ -45,6 +45,24 @@ class DishesService {
 		}
 	}
 
+	async deleteDish(dishName) {
+		const dish = await this.Dishes.findOne({
+			where: { Name: dishName }
+		});
+		
+		if (!dish) {
+			// console.log(`Dish "${dishName}" not found.`);
+			throw new Error('Dish not found');
+		}
+
+		console.log(' ~ DB Result:', dish);
+
+		// Delete record	
+		return await this.Dishes.destroy({
+			where: { Name: dishName }
+		})
+	}
+
 	async getAllDishes() {
 		// Create a JOIN RAW query to get the country and dish. Sequelize functions also can be used here
 		let Dishes = await this.client.query('SELECT Dishes.Id, Dishes.Name as DishName, Countries.Name as Country FROM Dishes JOIN Countries on Dishes.CountryId = Countries.Id', { type: QueryTypes.SELECT });
